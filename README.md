@@ -2,7 +2,7 @@
 
 Build your Python chops.
 
-![Just a box. Must've been my imagination.](images/mg2-solid-snake.png "Just a box. Must've been my imagination.")
+![Just a box. Must've been my imagination.](images/mg2-solid-snake.png "Just a box. Must've been my imagination.") **Just a box. Must've been my imagination.**
 
 ## Set up your development environment
 
