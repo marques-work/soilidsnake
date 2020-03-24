@@ -116,10 +116,49 @@ You should see:
 
 ```
 
+### Make your first build script
+
+`pipenv` allows run aliases (just like `npm` does) by adding them in the `[scripts]` section. You can use this like a simple task runner (kind of like`make`, `rake`, `gradle`, `ant`, etc. but more basic).
+
+In your `Pipfile`, add a section to the end:
+
+```
+[scripts]
+build = "python moo.py"
+```
+
+Now you should be able to run: `pipenv run build`
+
+Obviously, this is almost a silly example, but as your project becomes more complex, your build/package process will as well and your `build` alias will grow in complexity too. Having an alias will let you rerun your build reliably and easily.
+
+In real life, you'll probably add more aliases to do other common tasks, like `lint` or `test`.
+
 Don't forget to commit your work!
 
 ```bash
 git add -- moo.py
+git add -- Pipfile
 git commit -m "Dumb tutorial."
 git push
+```
+## Ok, so now what?
+
+### A key benefit of doing all this is to make it easy to share code with team members
+
+Now, when others on your team need to collaborate with you on this project, their setup workflow looks like this:
+
+```bash
+# grab the correct python version if they don't have it yet
+pyenv install
+
+# fetch all dependencies declared in the Pipfile
+pipenv install
+
+# hack away at code!
+...
+
+# run the build to verify work
+pipenv run build
+
+# rinse, repeat
 ```
