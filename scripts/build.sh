@@ -49,15 +49,8 @@ function install_pyenv() {
       die "Failed to clone the \`pyenv\` repo. Aborting."
     fi
 
-    if ! (line_in_profile "export PYENV_ROOT=~/.pyenv"); then
-      append_to_profile "export PYENV_ROOT=~/.pyenv"
-      append_to_profile "export PATH=\"\$PYENV_ROOT/bin:\$PATH\""
-
-      # also execute in the current process for immediate effect
-      # for the duration of this script
-      export PYENV_ROOT=~/.pyenv
-      export PATH="$PYENV_ROOT/bin:$PATH"
-    fi
+    append_to_profile_if_no_such_line "export PYENV_ROOT=~/.pyenv"
+    append_to_profile_if_no_such_line "export PATH=\"\$PYENV_ROOT/bin:\$PATH\""
   fi
 
   if ! (line_in_profile "eval \"\$(pyenv init -)\""); then
@@ -89,19 +82,28 @@ function install_pipenv() {
     local user_base_bin="$(python -m site --user-base)/bin"
     mkdir -p "$user_base_bin"
 
-    if ! (line_in_profile "export PATH=\"$user_base_bin:\$PATH\""); then
-      append_to_profile "export PATH=\"$user_base_bin:\$PATH\""
+    append_to_profile_if_no_such_line "export PATH=\"$user_base_bin:\$PATH\""
+  fi
 
-      # also execute in the current process for immediate effect
-      # for the duration of this script
-      export PATH="$user_base_bin:$PATH"
-    fi
+  append_to_profile_if_no_such_line "export PIPENV_PYTHON=\"\$(pyenv root)/shims/python\""
+}
+
+function append_to_profile_if_no_such_line() {
+  local line="$1"
+  if ! (line_in_profile "$line"); then
+    append_to_profile "$line"
+  fi
+
+  if (printf "$line" | grep -q "^export "); then
+    # also execute in the current process for immediate effect
+    # for the duration of this script
+    eval "$line"
   fi
 }
 
 # detects whether a line exists in the user's profile
 function line_in_profile() {
-  grep -v "[[:blank:]]*#[[:blank:]]*" "$(profile_file)" | grep -F "$*"
+  grep -v "[[:blank:]]*#[[:blank:]]*" "$(profile_file)" | grep -q -F "$*"
   return $?
 }
 
