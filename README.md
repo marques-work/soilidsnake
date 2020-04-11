@@ -4,6 +4,28 @@
 
 ![Just a box. Must've been my imagination.](images/mg2-solid-snake.png "Just a box. Must've been my imagination.") **Just a box. Must've been my imagination.**
 
+## TL;DR
+
+For the lazy/impatient. Anyway, the quick way to get set up here is to run:
+
+```bash
+# installs the right python and all pip packages
+$ scripts/build.sh
+```
+
+That will bootstrap everything for you to get up and running.
+
+Then you can just:
+
+```bash
+$ pipenv shell
+
+# you should now see a new shell prompt that launched a virtualenv.
+$ python moo.py
+```
+
+If you haven't, I encourage you to review the dev setup steps below to learn how to build a basic dev environment. It will be valuable to understand this process for any project you take on.
+
 ## Set up your development environment
 
 ### `pyenv` - manage python versions
